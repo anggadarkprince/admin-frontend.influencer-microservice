@@ -1,10 +1,13 @@
 import React from "react";
+import Wrapper from "./Wrapper";
 
 const Users = () => (
-    <div className="pt-3 pb-2 mb-3">
-        <h1 className="h3 fw-bold">Users</h1>
+    <Wrapper>
+        <div className="pt-3 pb-2 mb-3">
+            <h1 className="h3 fw-bold">Users</h1>
 
-    </div>
+        </div>
+    </Wrapper>
 );
 
 export default Users;
