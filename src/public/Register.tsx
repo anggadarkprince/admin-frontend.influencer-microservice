@@ -2,7 +2,7 @@ import React, {Component, SyntheticEvent} from 'react';
 import './Public.css';
 import * as Icon from "react-feather";
 import axios from "axios";
-import { Navigate } from 'react-router-dom';
+import {Link, Navigate} from 'react-router-dom';
 
 class Register extends Component {
     firstName = '';
@@ -75,6 +75,7 @@ class Register extends Component {
                     </div>
 
                     <button className="w-100 btn btn-lg btn-primary mt-3" type="submit">Register</button>
+                    <p className="mt-3">Already have an account? <Link to="/login">Login here</Link></p>
                     <p className="mt-4 mb-3 text-muted">&copy; Copyright all rights reserved</p>
                 </form>
             </main>
