@@ -4,6 +4,7 @@ import Wrapper from "../Wrapper";
 import axios from "axios";
 import {Role} from "../../classes/Role";
 import {User} from "../../classes/User";
+import SectionTitle from "../components/SectionTitle";
 
 class UserEdit extends Component<{match: PropsWithRef<any>}> {
     state = {
@@ -60,9 +61,7 @@ class UserEdit extends Component<{match: PropsWithRef<any>}> {
 
         return (
             <Wrapper>
-                <div className="pt-3 pb-2 mb-3 border-bottom">
-                    <h1 className="h3 fw-bold">Edit Users</h1>
-                </div>
+                <SectionTitle title="Edit User"/>
                 <form onSubmit={this.submit}>
                     <div className="form-floating mb-2">
                         <input type="text" className="form-control" id="floatingFirstName"

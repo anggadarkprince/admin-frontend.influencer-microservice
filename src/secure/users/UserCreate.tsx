@@ -3,6 +3,7 @@ import {Navigate} from "react-router-dom";
 import Wrapper from "../Wrapper";
 import axios from "axios";
 import {Role} from "../../classes/Role";
+import SectionTitle from "../components/SectionTitle";
 
 class UserCreate extends Component {
     state = {
@@ -44,9 +45,7 @@ class UserCreate extends Component {
 
         return (
             <Wrapper>
-                <div className="pt-3 pb-2 mb-3 border-bottom">
-                    <h1 className="h3 fw-bold">Create Users</h1>
-                </div>
+                <SectionTitle title="Create User"/>
                 <form onSubmit={this.submit}>
                     <div className="form-floating mb-2">
                         <input type="text" className="form-control" id="floatingFirstName"
