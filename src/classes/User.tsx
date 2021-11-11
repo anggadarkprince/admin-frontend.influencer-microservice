@@ -16,4 +16,24 @@ export class User {
         this.role = role;
         this.permissions = permissions;
     }
+
+    get name() {
+        return this.first_name + ' ' + this.last_name;
+    }
+
+    canView(page: string) {
+        return this.permissions.some(p => p === `view-${page}`);
+    }
+
+    canCreate(page: string) {
+        return this.permissions.some(p => p === `create-${page}`);
+    }
+
+    canEdit(page: string) {
+        return this.permissions.some(p => p === `edit-${page}`);
+    }
+
+    canDelete(page: string) {
+        return this.permissions.some(p => p === `delete-${page}`);
+    }
 }
