@@ -1,31 +1,47 @@
-import React, {Component, SyntheticEvent} from 'react';
+import React, {Component, PropsWithRef, SyntheticEvent} from 'react';
 import {Navigate} from "react-router-dom";
 import Wrapper from "../Wrapper";
 import axios from "axios";
 import {Role} from "../../classes/Role";
+import {User} from "../../classes/User";
 
-class UserCreate extends Component {
+class UserEdit extends Component<{match: PropsWithRef<any>}> {
     state = {
         roles: [],
+        first_name: '',
+        last_name: '',
+        email: '',
+        role_id: 0,
         redirect: false
     }
+    id = 0;
     firstName = '';
     lastName = '';
     email = '';
     roleId = 0;
 
     componentDidMount = async () => {
-        const response = await axios.get('roles');
+        this.id = this.props.match.params.id;
+
+        const rolesCall = await axios.get('roles');
+
+        const userCall = await axios.get(`users/${this.id}`);
+
+        const user: User = userCall.data.data;
 
         this.setState({
-            roles: response.data.data
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email,
+            role_id: user.role.id,
+            roles: rolesCall.data.data
         })
     }
 
     submit = async (e: SyntheticEvent) => {
         e.preventDefault();
 
-        await axios.post('users', {
+        await axios.put(`users/${this.id}`, {
             first_name: this.firstName,
             last_name: this.lastName,
             email: this.email,
@@ -45,24 +61,27 @@ class UserCreate extends Component {
         return (
             <Wrapper>
                 <div className="pt-3 pb-2 mb-3 border-bottom">
-                    <h1 className="h3 fw-bold">Create Users</h1>
+                    <h1 className="h3 fw-bold">Edit Users</h1>
                 </div>
                 <form onSubmit={this.submit}>
                     <div className="form-floating mb-2">
                         <input type="text" className="form-control" id="floatingFirstName"
                                placeholder="Your first name" required
+                               defaultValue={this.firstName = this.state.first_name}
                                onChange={e => this.firstName = e.target.value} />
                         <label htmlFor="floatingFirstName">First Name</label>
                     </div>
                     <div className="form-floating mb-2">
                         <input type="text" className="form-control" id="floatingLastName"
                                placeholder="Your last name" required
+                               defaultValue={this.lastName = this.state.last_name}
                                onChange={e => this.lastName = e.target.value}/>
                         <label htmlFor="floatingLastName">Last Name</label>
                     </div>
                     <div className="form-floating mb-2">
                         <input type="email" className="form-control" id="floatingEmail"
                                placeholder="name@example.com" required
+                               defaultValue={this.email = this.state.email}
                                onChange={e => this.email = e.target.value}/>
                         <label htmlFor="floatingEmail">Email address</label>
                     </div>
@@ -70,6 +89,7 @@ class UserCreate extends Component {
                     <div className="mb-2">
                         <label>Role</label>
                         <select name="role_id" className="form-control"
+                                value={this.roleId = this.state.role_id}
                                 onChange={e => this.roleId = parseInt(e.target.value)}>
                             <option>Select Role</option>
                             {this.state.roles.map(
@@ -79,11 +99,11 @@ class UserCreate extends Component {
                             )}
                         </select>
                     </div>
-                    <button className="btn btn-primary mt-3" type="submit">Save</button>
+                    <button className="btn btn-primary mt-3" type="submit">Update</button>
                 </form>
             </Wrapper>
         );
     }
 }
 
-export default UserCreate;
+export default UserEdit;
