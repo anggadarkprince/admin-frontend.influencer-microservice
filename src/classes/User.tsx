@@ -8,7 +8,7 @@ export class User {
     role: Role;
     permissions: string[];
 
-    constructor(id = 0, first_name = '', last_name: '', email = '', role = new Role(), permissions = []) {
+    constructor(id = 0, first_name = '', last_name = '', email = '', role = new Role(), permissions = []) {
         this.id = id;
         this.first_name = first_name;
         this.last_name = last_name;

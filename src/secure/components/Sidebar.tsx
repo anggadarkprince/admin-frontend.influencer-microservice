@@ -39,34 +39,34 @@ class Sidebar extends Component {
                             </NavLink>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link d-flex align-items-center" href="#">
+                            <NavLink to={'/orders'} className="nav-link d-flex align-items-center">
                                 <Icon.File size={16} className="me-2"/>
                                 Orders
-                            </a>
+                            </NavLink>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link d-flex align-items-center" href="#">
+                            <NavLink to={'/products'} className="nav-link d-flex align-items-center">
                                 <Icon.ShoppingCart size={16} className="me-2"/>
                                 Products
-                            </a>
+                            </NavLink>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link d-flex align-items-center" href="#">
+                            <NavLink to={'/reports'} className="nav-link d-flex align-items-center">
                                 <Icon.BarChart2 size={16} className="me-2"/>
                                 Reports
-                            </a>
+                            </NavLink>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link d-flex align-items-center" href="#">
-                                <Icon.Layers size={16} className="me-2"/>
+                            <NavLink to={'/integrations'} className="nav-link d-flex align-items-center">
+                                <Icon.BarChart2 size={16} className="me-2"/>
                                 Integrations
-                            </a>
+                            </NavLink>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link d-flex align-items-center" href="#" onClick={this.handleSignOut}>
+                            <NavLink to={'/logout'} className="nav-link d-flex align-items-center" onClick={this.handleSignOut}>
                                 <Icon.LogOut size={16} className="me-2"/>
-                                Sign Out
-                            </a>
+                                Integrations
+                            </NavLink>
                         </li>
                     </ul>
 
