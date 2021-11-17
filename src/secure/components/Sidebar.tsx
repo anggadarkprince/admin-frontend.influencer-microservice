@@ -2,26 +2,8 @@ import React, {Component, SyntheticEvent} from "react";
 import * as Icon from "react-feather";
 import {NavLink, Navigate} from "react-router-dom";
 
-class Sidebar extends Component {
-    state = {
-        redirect: false
-    }
-
-    handleSignOut = (e: SyntheticEvent) => {
-        e.preventDefault();
-
-        localStorage.clear();
-
-        this.setState({
-            redirect: true
-        });
-    }
-
+class Sidebar extends Component<{handleSignOut: any}> {
     render() {
-        if (this.state.redirect) {
-            return <Navigate to={'/login'}/>;
-        }
-
         return (
             <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse">
                 <div className="position-sticky p-3">
@@ -39,9 +21,9 @@ class Sidebar extends Component {
                             </NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink to={'/orders'} className="nav-link d-flex align-items-center">
-                                <Icon.File size={16} className="me-2"/>
-                                Orders
+                            <NavLink to={'/roles'} className="nav-link d-flex align-items-center">
+                                <Icon.Lock size={16} className="me-2"/>
+                                Roles
                             </NavLink>
                         </li>
                         <li className="nav-item">
@@ -51,21 +33,21 @@ class Sidebar extends Component {
                             </NavLink>
                         </li>
                         <li className="nav-item">
+                            <NavLink to={'/orders'} className="nav-link d-flex align-items-center">
+                                <Icon.File size={16} className="me-2"/>
+                                Orders
+                            </NavLink>
+                        </li>
+                        <li className="nav-item">
                             <NavLink to={'/reports'} className="nav-link d-flex align-items-center">
                                 <Icon.BarChart2 size={16} className="me-2"/>
                                 Reports
                             </NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink to={'/integrations'} className="nav-link d-flex align-items-center">
-                                <Icon.BarChart2 size={16} className="me-2"/>
-                                Integrations
-                            </NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink to={'/logout'} className="nav-link d-flex align-items-center" onClick={this.handleSignOut}>
+                            <NavLink to={'/logout'} className="nav-link d-flex align-items-center" onClick={this.props.handleSignOut}>
                                 <Icon.LogOut size={16} className="me-2"/>
-                                Integrations
+                                Logout
                             </NavLink>
                         </li>
                     </ul>
