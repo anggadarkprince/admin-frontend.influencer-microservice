@@ -47,28 +47,34 @@ class UserCreate extends Component {
             <Wrapper>
                 <SectionTitle title="Create User"/>
                 <form onSubmit={this.submit}>
-                    <div className="form-floating mb-2">
-                        <input type="text" className="form-control" id="floatingFirstName"
-                               placeholder="Your first name" required
-                               onChange={e => this.firstName = e.target.value} />
-                        <label htmlFor="floatingFirstName">First Name</label>
+                    <div className="row">
+                        <div className="col">
+                            <div className="mb-2">
+                                <label htmlFor="floatingFirstName" className="mb-2">First Name</label>
+                                <input type="text" className="form-control" id="floatingFirstName"
+                                       placeholder="Your first name" required
+                                       onChange={e => this.firstName = e.target.value} />
+                            </div>
+                        </div>
+                        <div className="col">
+                            <div className="mb-3">
+                                <label htmlFor="floatingLastName" className="mb-2">Last Name</label>
+                                <input type="text" className="form-control" id="floatingLastName"
+                                       placeholder="Your last name" required
+                                       onChange={e => this.lastName = e.target.value}/>
+                            </div>
+                        </div>
                     </div>
-                    <div className="form-floating mb-2">
-                        <input type="text" className="form-control" id="floatingLastName"
-                               placeholder="Your last name" required
-                               onChange={e => this.lastName = e.target.value}/>
-                        <label htmlFor="floatingLastName">Last Name</label>
-                    </div>
-                    <div className="form-floating mb-2">
+                    <div className="mb-3">
+                        <label htmlFor="floatingEmail" className="mb-2">Email address</label>
                         <input type="email" className="form-control" id="floatingEmail"
                                placeholder="name@example.com" required
                                onChange={e => this.email = e.target.value}/>
-                        <label htmlFor="floatingEmail">Email address</label>
                     </div>
 
                     <div className="mb-2">
-                        <label>Role</label>
-                        <select name="role_id" className="form-control"
+                        <label htmlFor="role_id" className="mb-2">Role</label>
+                        <select name="role_id" id="role_id" className="form-control"
                                 onChange={e => this.roleId = parseInt(e.target.value)}>
                             <option>Select Role</option>
                             {this.state.roles.map(

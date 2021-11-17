@@ -42,7 +42,8 @@ class Users extends Component {
         await this.componentDidMount();
     }
 
-    delete = async (id: number) => {
+    delete = async (e: SyntheticEvent, id: number) => {
+        e.preventDefault();
         if (window.confirm("Are you sure you want to delete this user?")) {
             await axios.delete(`users/${id}`);
 
@@ -88,7 +89,7 @@ class Users extends Component {
                                         <Link to={`/users/${user.id}/edit`} className="btn btn-sm btn-success me-1">
                                             <Icon.Edit3 size={16}/>
                                         </Link>
-                                        <Link to={`/users/${user.id}`} onClick={() => this.delete(user.id)} className="btn btn-sm btn-danger">
+                                        <Link to={`/users/${user.id}`} onClick={(e) => this.delete(e, user.id)} className="btn btn-sm btn-danger">
                                             <Icon.Trash2 size={16}/>
                                         </Link>
                                     </td>

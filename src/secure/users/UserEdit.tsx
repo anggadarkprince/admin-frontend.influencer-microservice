@@ -1,12 +1,12 @@
 import React, {Component, PropsWithRef, SyntheticEvent} from 'react';
-import {Navigate} from "react-router-dom";
+import {Navigate, useParams} from "react-router-dom";
 import Wrapper from "../Wrapper";
 import axios from "axios";
 import {Role} from "../../classes/Role";
 import {User} from "../../classes/User";
 import SectionTitle from "../components/SectionTitle";
 
-class UserEdit extends Component<{match: PropsWithRef<any>}> {
+class UserEdit extends Component<{params: any}> {
     state = {
         roles: [],
         first_name: '',
@@ -22,7 +22,7 @@ class UserEdit extends Component<{match: PropsWithRef<any>}> {
     roleId = 0;
 
     componentDidMount = async () => {
-        this.id = this.props.match.params.id;
+        this.id = this.props.params.id;
 
         const rolesCall = await axios.get('roles');
 
@@ -63,33 +63,44 @@ class UserEdit extends Component<{match: PropsWithRef<any>}> {
             <Wrapper>
                 <SectionTitle title="Edit User"/>
                 <form onSubmit={this.submit}>
-                    <div className="form-floating mb-2">
-                        <input type="text" className="form-control" id="floatingFirstName"
-                               placeholder="Your first name" required
-                               defaultValue={this.firstName = this.state.first_name}
-                               onChange={e => this.firstName = e.target.value} />
-                        <label htmlFor="floatingFirstName">First Name</label>
+                    <div className="row">
+                        <div className="col">
+                            <div className="mb-2">
+                                <label htmlFor="floatingFirstName" className="mb-2">First Name</label>
+                                <input type="text" className="form-control" id="floatingFirstName"
+                                       placeholder="Your first name" required
+                                       defaultValue={this.firstName = this.state.first_name}
+                                       onChange={e => this.firstName = e.target.value} />
+                            </div>
+                        </div>
+                        <div className="col">
+                            <div className="mb-3">
+                                <label htmlFor="floatingLastName" className="mb-2">Last Name</label>
+                                <input type="text" className="form-control" id="floatingLastName"
+                                       placeholder="Your last name" required
+                                       defaultValue={this.lastName = this.state.last_name}
+                                       onChange={e => this.lastName = e.target.value}/>
+                            </div>
+                        </div>
                     </div>
-                    <div className="form-floating mb-2">
-                        <input type="text" className="form-control" id="floatingLastName"
-                               placeholder="Your last name" required
-                               defaultValue={this.lastName = this.state.last_name}
-                               onChange={e => this.lastName = e.target.value}/>
-                        <label htmlFor="floatingLastName">Last Name</label>
-                    </div>
-                    <div className="form-floating mb-2">
+                    <div className="mb-3">
+                        <label htmlFor="floatingEmail" className="mb-2">Email address</label>
                         <input type="email" className="form-control" id="floatingEmail"
                                placeholder="name@example.com" required
                                defaultValue={this.email = this.state.email}
                                onChange={e => this.email = e.target.value}/>
-                        <label htmlFor="floatingEmail">Email address</label>
                     </div>
 
                     <div className="mb-2">
-                        <label>Role</label>
-                        <select name="role_id" className="form-control"
-                                value={this.roleId = this.state.role_id}
-                                onChange={e => this.roleId = parseInt(e.target.value)}>
+                        <label htmlFor="role_id" className="mb-2">Role</label>
+                        <select name="role_id" id="role_id" className="form-control"
+                                value={this.state.role_id}
+                                onChange={e => {
+                                    this.roleId = parseInt(e.target.value);
+                                    this.setState({
+                                        role_id: this.roleId
+                                    });
+                                }}>
                             <option>Select Role</option>
                             {this.state.roles.map(
                                 (role: Role) => {
@@ -105,4 +116,8 @@ class UserEdit extends Component<{match: PropsWithRef<any>}> {
     }
 }
 
-export default UserEdit;
+export default () => {
+    let params = useParams();
+
+    return <UserEdit params={params} />
+};
