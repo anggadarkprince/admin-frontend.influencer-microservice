@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {User} from "../../classes/User";
 import axios from "axios";
 import {Product} from "../../classes/Product";
 import Edit from "../components/Edit";
@@ -9,6 +8,7 @@ import Wrapper from "../Wrapper";
 import {Link} from "react-router-dom";
 import * as Icon from "react-feather";
 import Paginator from "../components/Paginator";
+import {formatThousands} from "../../helpers/NumberFormat";
 
 class ProductIndex extends Component {
     state = {
@@ -79,7 +79,7 @@ class ProductIndex extends Component {
                                     <td><img src={product.image} width="50" alt={product.title}/></td>
                                     <td>{product.title}</td>
                                     <td>{product.description}</td>
-                                    <td>{product.price}</td>
+                                    <td>{formatThousands(product.price, 'IDR ')}</td>
                                     <td>{this.actions(product.id)}</td>
                                 </tr>
                             )

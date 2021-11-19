@@ -4,29 +4,33 @@ import {Order} from "../../classes/Order";
 import axios from "axios";
 import React, {Component} from "react";
 import SectionTitle from "../components/SectionTitle";
+import {useParams} from "react-router-dom";
+import {formatThousands} from "../../helpers/NumberFormat";
 
-class OrderItems extends Component<{ match: any }> {
+class OrderItems extends Component<{ params: any }> {
     state = {
-        order_items: []
+        transactionId: '',
+        orderItems: []
     }
     id = 0;
 
     componentDidMount = async () => {
-        this.id = this.props.match.params.id;
+        this.id = this.props.params.id;
 
         const response = await axios.get(`orders/${this.id}`);
 
         const order: Order = response.data.data;
 
         this.setState({
-            order_items: order.order_items
+            transactionId: order.transaction_id,
+            orderItems: order.order_items
         })
     }
 
     render() {
         return (
             <Wrapper>
-                <SectionTitle title="View Product Detail"/>
+                <SectionTitle title={`View Order ${this.state.transactionId}`}/>
 
                 <div className="table-responsive">
                     <table className="table table-striped table-sm">
@@ -36,17 +40,21 @@ class OrderItems extends Component<{ match: any }> {
                             <th>Product Title</th>
                             <th>Price</th>
                             <th>Quantity</th>
+                            <th>Influencer Revenue</th>
+                            <th>Admin Revenue</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {this.state.order_items.map(
-                            (orderItem: OrderItem) => {
+                        {this.state.orderItems.map(
+                            (orderItem: OrderItem, index: number) => {
                                 return (
                                     <tr key={orderItem.id}>
-                                        <td>{orderItem.id}</td>
+                                        <td>{index + 1}</td>
                                         <td>{orderItem.product_title}</td>
-                                        <td>{orderItem.price}</td>
+                                        <td>{formatThousands(orderItem.price, 'IDR ')}</td>
                                         <td>{orderItem.quantity}</td>
+                                        <td>{formatThousands(orderItem.influencer_revenue || 0, 'IDR ')}</td>
+                                        <td>{formatThousands(orderItem.admin_revenue || 0, 'IDR ')}</td>
                                     </tr>
                                 )
                             }
@@ -59,4 +67,8 @@ class OrderItems extends Component<{ match: any }> {
     }
 }
 
-export default OrderItems;
+export default () => {
+    let params = useParams();
+
+    return <OrderItems params={params}/>
+};

@@ -6,6 +6,7 @@ import {Link} from "react-router-dom";
 import * as Icon from "react-feather";
 import {Order} from "../../classes/Order";
 import Paginator from "../components/Paginator";
+import {formatThousands} from "../../helpers/NumberFormat";
 
 class Orders extends Component {
     state = {
@@ -60,7 +61,7 @@ class Orders extends Component {
                                         <td>{order.id}</td>
                                         <td>{order.first_name} {order.last_name}</td>
                                         <td>{order.email}</td>
-                                        <td>{order.total}</td>
+                                        <td>{formatThousands(order.total, 'IDR ')}</td>
                                         <td>
                                             <div className="btn-group mr-2">
                                                 <Link to={`/orders/${order.id}`} className="btn btn-sm btn-primary">

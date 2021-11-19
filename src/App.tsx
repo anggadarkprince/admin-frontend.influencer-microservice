@@ -8,6 +8,8 @@ import Register from "./public/Register";
 import RedirectToDashboard from "./secure/RedirectToDashboard";
 import Roles from "./secure/roles/Roles";
 import Products from "./secure/products/Products";
+import Orders from "./secure/orders/Orders";
+import OrderItems from "./secure/orders/OrderItems";
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
             <Route path={'/users/*'} element={<Users/>} />
             <Route path={'/roles/*'} element={<Roles/>} />
             <Route path={'/products/*'} element={<Products/>} />
+            <Route path={'/orders'} element={<Orders/>} />
+            <Route path={'/orders/:id'} element={<OrderItems/>} />
             <Route
                 path="*"
                 element={
