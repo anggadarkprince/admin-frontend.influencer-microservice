@@ -7,6 +7,7 @@ import Login from "./public/Login";
 import Register from "./public/Register";
 import RedirectToDashboard from "./secure/RedirectToDashboard";
 import Roles from "./secure/roles/Roles";
+import Products from "./secure/products/Products";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path={'/register'} element={<Register/>} />
             <Route path={'/users/*'} element={<Users/>} />
             <Route path={'/roles/*'} element={<Roles/>} />
+            <Route path={'/products/*'} element={<Products/>} />
             <Route
                 path="*"
                 element={

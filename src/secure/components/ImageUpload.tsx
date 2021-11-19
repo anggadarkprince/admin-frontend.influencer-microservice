@@ -21,7 +21,8 @@ class ImageUpload extends Component<{ value: string, imageChanged: any }> {
     render() {
         return (
             <div className="input-group">
-                <input type="text" className="form-control" name="image"
+                <input type="text" className="form-control" name="image" id="image"
+                       placeholder="Pick an image to upload"
                        value={this.image = this.props.value}
                        onChange={e => {
                            this.image = e.target.value;

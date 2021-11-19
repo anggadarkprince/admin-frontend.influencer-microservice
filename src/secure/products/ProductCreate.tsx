@@ -49,26 +49,26 @@ class ProductCreate extends Component {
 
                 <form onSubmit={this.submit}>
                     <div className="mb-2">
-                        <label htmlFor="title">Title</label>
-                        <input type="text" className="form-control" name="title" id="title"
+                        <label htmlFor="title" className="mb-2">Title</label>
+                        <input type="text" className="form-control" name="title" id="title" placeholder="Product title"
                                onChange={e => this.title = e.target.value}/>
                     </div>
                     <div className="mb-2">
-                        <label htmlFor="description">Description</label>
-                        <textarea className="form-control" name="description" id="description"
+                        <label htmlFor="description" className="mb-2">Description</label>
+                        <textarea className="form-control" name="description" id="description" placeholder="Product description"
                                   onChange={e => this.description = e.target.value}/>
                     </div>
                     <div className="mb-2">
-                        <label>Image</label>
+                        <label htmlFor="image" className="mb-2">Image</label>
                         <ImageUpload value={this.image = this.state.image} imageChanged={this.imageChanged}/>
                     </div>
                     <div className="mb-2">
-                        <label htmlFor="email">Price</label>
-                        <input type="number" className="form-control" name="email" id="email"
+                        <label htmlFor="price" className="mb-2">Price</label>
+                        <input type="number" className="form-control" name="price" id="price" placeholder="Product price"
                                onChange={e => this.price = parseFloat(e.target.value)}/>
                     </div>
 
-                    <button className="btn btn-primary mt-3" type="submit">Save</button>
+                    <button className="btn btn-primary mt-3 px-4" type="submit">Save Product</button>
                 </form>
             </Wrapper>
         );

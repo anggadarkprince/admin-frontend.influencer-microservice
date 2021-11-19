@@ -4,7 +4,7 @@ import RoleCreate from "./RoleCreate";
 import RoleEdit from "./RoleEdit";
 import RoleIndex from "./RoleIndex";
 
-function Users() {
+function Roles() {
     return (
         <Routes>
             <Route path={'/'} element={<RoleIndex/>} />
@@ -14,4 +14,4 @@ function Users() {
     );
 }
 
-export default Users;
+export default Roles;
