@@ -1,4 +1,4 @@
-import React, {Component, PropsWithRef, SyntheticEvent} from 'react';
+import React, {Component, SyntheticEvent} from 'react';
 import {Navigate, useParams} from "react-router-dom";
 import Wrapper from "../Wrapper";
 import axios from "axios";

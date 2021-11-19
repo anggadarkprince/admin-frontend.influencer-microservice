@@ -6,6 +6,10 @@
     margin: auto;
 }
 
+.form-signup {
+    max-width: 450px;
+}
+
 .form-signin .checkbox,
 .form-signup .checkbox {
     font-weight: 400;

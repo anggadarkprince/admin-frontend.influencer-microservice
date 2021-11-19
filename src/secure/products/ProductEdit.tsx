@@ -4,6 +4,7 @@ import {Product} from "../../classes/Product";
 import {Navigate} from "react-router-dom";
 import Wrapper from "../Wrapper";
 import ImageUpload from "../components/ImageUpload";
+import SectionTitle from "../components/SectionTitle";
 
 class ProductEdit extends Component<{ match: any }> {
     state = {
@@ -65,6 +66,8 @@ class ProductEdit extends Component<{ match: any }> {
 
         return (
             <Wrapper>
+                <SectionTitle title="Edit Product"/>
+
                 <form onSubmit={this.submit}>
                     <div className="mb-2">
                         <label htmlFor="title">Title</label>

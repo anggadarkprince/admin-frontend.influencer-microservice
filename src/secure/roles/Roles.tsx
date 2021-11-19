@@ -46,7 +46,7 @@ class Roles extends Component {
                         <tr>
                             <th>#</th>
                             <th>Name</th>
-                            <th>Action</th>
+                            <th className="text-end">Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -56,11 +56,9 @@ class Roles extends Component {
                                     <tr key={role.id}>
                                         <td>{role.id}</td>
                                         <td>{role.name}</td>
-                                        <td>
-                                            <div className="btn-group mr-2">
-                                                <Edit id={role.id} endpoint={'roles'} />
-                                                <Delete id={role.id} endpoint={'roles'} handleDelete={this.handleDelete}/>
-                                            </div>
+                                        <td className="text-end">
+                                            <Edit id={role.id} endpoint={'/roles'} />
+                                            <Delete id={role.id} endpoint={'/roles'} handleDelete={this.handleDelete}/>
                                         </td>
                                     </tr>
                                 )

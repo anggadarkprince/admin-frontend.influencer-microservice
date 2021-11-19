@@ -43,17 +43,23 @@ class Register extends Component {
                     <h1 className="h3 fw-normal mb-1">Register</h1>
                     <p className="text-muted mb-4">Registering your account</p>
 
-                    <div className="form-floating mb-2">
-                        <input type="text" className="form-control" id="floatingFirstName"
-                               placeholder="Your first name" required
-                               onChange={e => this.firstName = e.target.value} />
-                        <label htmlFor="floatingFirstName">First Name</label>
-                    </div>
-                    <div className="form-floating mb-2">
-                        <input type="text" className="form-control" id="floatingLastName"
-                               placeholder="Your last name" required
-                               onChange={e => this.lastName = e.target.value}/>
-                        <label htmlFor="floatingLastName">Last Name</label>
+                    <div className="row gx-2">
+                        <div className="col">
+                            <div className="form-floating mb-2">
+                                <input type="text" className="form-control" id="floatingFirstName"
+                                       placeholder="Your first name" required
+                                       onChange={e => this.firstName = e.target.value} />
+                                <label htmlFor="floatingFirstName">First Name</label>
+                            </div>
+                        </div>
+                        <div className="col">
+                            <div className="form-floating mb-2">
+                                <input type="text" className="form-control" id="floatingLastName"
+                                       placeholder="Your last name" required
+                                       onChange={e => this.lastName = e.target.value}/>
+                                <label htmlFor="floatingLastName">Last Name</label>
+                            </div>
+                        </div>
                     </div>
                     <div className="form-floating mb-2">
                         <input type="email" className="form-control" id="floatingEmail"

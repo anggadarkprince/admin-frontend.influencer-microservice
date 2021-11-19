@@ -3,6 +3,7 @@ import axios from "axios";
 import {Navigate} from "react-router-dom";
 import Wrapper from "../Wrapper";
 import ImageUpload from "../components/ImageUpload";
+import SectionTitle from "../components/SectionTitle";
 
 class ProductCreate extends Component {
     state = {
@@ -44,6 +45,8 @@ class ProductCreate extends Component {
 
         return (
             <Wrapper>
+                <SectionTitle title="Create Product"/>
+
                 <form onSubmit={this.submit}>
                     <div className="mb-2">
                         <label htmlFor="title">Title</label>

@@ -7,7 +7,7 @@ class Edit extends Component<{ id: number, endpoint: string }> {
     render() {
         return (
             <Link to={`${this.props.endpoint}/${this.props.id}/edit`}
-                  className="btn btn-sm btn-outline-secondary">
+                  className="btn btn-sm btn-success mx-1">
                 <Icon.Edit3 size={16}/>
             </Link>
         );

@@ -2,11 +2,11 @@ import React, {Component, SyntheticEvent} from 'react';
 import axios from "axios";
 import {Role} from "../../classes/Role";
 import {Permission} from "../../classes/Permission";
-import {Navigate} from "react-router-dom";
+import {Navigate, useParams} from "react-router-dom";
 import Wrapper from "../Wrapper";
 import SectionTitle from "../components/SectionTitle";
 
-class RoleEdit extends Component<{ match: any }> {
+class RoleEdit extends Component<{params: any}> {
     state = {
         name: '',
         selected: [],
@@ -18,7 +18,7 @@ class RoleEdit extends Component<{ match: any }> {
     id = 0;
 
     componentDidMount = async () => {
-        this.id = this.props.match.params.id;
+        this.id = this.props.params.id;
 
         const permissionCall = await axios.get('permissions');
 
@@ -88,12 +88,12 @@ class RoleEdit extends Component<{ match: any }> {
                                 (p: Permission) => {
                                     return (
                                         <div className="form-check form-check-inline col-3" key={p.id}>
-                                            <input className="form-check-input" type="checkbox"
+                                            <input className="form-check-input" type="checkbox" id={`permission-${p.id}`}
                                                    value={p.id}
                                                    defaultChecked={this.isChecked(p.id)}
                                                    onChange={e => this.check(p.id)}
                                             />
-                                            <label className="form-check-label">{p.name}</label>
+                                            <label className="form-check-label" htmlFor={`permission-${p.id}`}>{p.name}</label>
                                         </div>
                                     )
                                 }
@@ -107,4 +107,8 @@ class RoleEdit extends Component<{ match: any }> {
     }
 }
 
-export default RoleEdit;
+export default () => {
+    let params = useParams();
+
+    return <RoleEdit params={params} />
+};

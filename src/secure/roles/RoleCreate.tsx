@@ -53,11 +53,11 @@ class RoleCreate extends Component {
                 <SectionTitle title="Create Role"/>
 
                 <form onSubmit={this.submit}>
-                    <div className="mb-2 row">
+                    <div className="mb-3 row">
                         <label htmlFor="name" className="col-sm-3">Name</label>
                         <div className="col-sm-9">
                             <input type="text" className="form-control" name="name" id="name"
-                                   onChange={e => this.name = e.target.value}
+                                   onChange={e => this.name = e.target.value} placeholder="Type role name"
                             />
                         </div>
                     </div>
@@ -70,9 +70,9 @@ class RoleCreate extends Component {
                                     return (
                                         <div className="form-check form-check-inline col-3" key={p.id}>
                                             <input className="form-check-input" type="checkbox" value={p.id}
-                                                   onChange={e => this.check(p.id)}
+                                                   onChange={e => this.check(p.id)} id={`permission-${p.id}`}
                                             />
-                                            <label className="form-check-label">{p.name}</label>
+                                            <label className="form-check-label" htmlFor={`permission-${p.id}`}>{p.name}</label>
                                         </div>
                                     )
                                 }

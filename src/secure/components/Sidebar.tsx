@@ -9,7 +9,7 @@ class Sidebar extends Component<{handleSignOut: any}> {
                 <div className="position-sticky p-3">
                     <ul className="nav nav-pills flex-column">
                         <li className="nav-item">
-                            <NavLink to="/" className="nav-link d-flex align-items-center">
+                            <NavLink to="/dashboard" className="nav-link d-flex align-items-center">
                                 <Icon.Home size={16} className="me-2"/>
                                 Dashboard
                             </NavLink>
