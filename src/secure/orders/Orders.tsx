@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, SyntheticEvent } from 'react';
 import axios from "axios";
 import Wrapper from "../Wrapper";
 import SectionTitleAction from "../components/SectionTitleAction";
@@ -39,8 +39,24 @@ class Orders extends Component {
         await this.componentDidMount();
     }
 
+    handleExport = async (e: SyntheticEvent) => {
+        e.preventDefault();
+
+        const response = await axios.get('export', {responseType: 'blob'});
+        const blob = new Blob([response.data], {type: 'text/csv'});
+        const downloadUrl = window.URL.createObjectURL(response.data)
+        const link = document.createElement('a')
+        link.href = downloadUrl
+        link.download = "order.csv";
+        link.click();
+    }
+
     toolbars = () => {
-        return <></>;
+        return (
+        <Link to={'/export'} className="btn btn-sm btn-success" onClick={this.handleExport}>
+            <Icon.File size={16} className="me-1" />
+            EXPORT
+        </Link>);
     }
 
     render() {
