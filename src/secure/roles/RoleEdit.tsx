@@ -138,8 +138,11 @@ class RoleEdit extends Component<{ params: any }> {
     }
 }
 
-export default () => {
+
+function RoleWithParam() {
     let params = useParams();
 
     return <RoleEdit params={params} />
-};
+}
+
+export default RoleWithParam;

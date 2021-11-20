@@ -1,8 +1,8 @@
-import {Component} from "react";
+import { Component } from "react";
 import axios from "axios";
 import * as React from "react";
 
-class ImageUpload extends Component<{ value: string, imageChanged: any }> {
+class ImageUpload extends Component<{ value: string, imageChanged: any, imageStartUpload?: any }> {
     image = '';
 
     upload = async (files: FileList | null) => {
@@ -10,6 +10,10 @@ class ImageUpload extends Component<{ value: string, imageChanged: any }> {
 
         const data = new FormData();
         data.append('image', files[0]);
+
+        if (this.props.imageStartUpload) {
+            this.props.imageStartUpload(files[0])
+        }
 
         const response = await axios.post('upload', data);
 
@@ -22,15 +26,15 @@ class ImageUpload extends Component<{ value: string, imageChanged: any }> {
         return (
             <div className="input-group">
                 <input type="text" className="form-control" name="image" id="image"
-                       placeholder="Pick an image to upload"
-                       value={this.image = this.props.value}
-                       onChange={e => {
-                           this.image = e.target.value;
-                           this.props.imageChanged(this.image);
-                       }}
+                    placeholder="Pick an image to upload"
+                    value={this.image = this.props.value}
+                    onChange={e => {
+                        this.image = e.target.value;
+                        this.props.imageChanged(this.image);
+                    }}
                 />
                 <label className="btn btn-primary">
-                    Upload <input type="file" hidden onChange={e => this.upload(e.target.files)}/>
+                    Upload <input type="file" hidden onChange={e => this.upload(e.target.files)} />
                 </label>
             </div>
         );

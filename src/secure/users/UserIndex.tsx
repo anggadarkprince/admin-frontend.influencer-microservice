@@ -5,15 +5,16 @@ import { User } from "../../classes/User";
 import * as Icon from "react-feather";
 import { Link } from "react-router-dom";
 import LoadingRow from "../components/LoadingRow";
+import Paginator from "../components/Paginator";
 
 class UserIndex extends Component {
     state = {
         isLoading: true,
         fromPageOrder: 1,
+        lastPage: 1,
         users: []
     }
     page = 1;
-    lastPage = 0;
 
     componentDidMount = async () => {
         this.setState({
@@ -25,28 +26,13 @@ class UserIndex extends Component {
         this.setState({
             isLoading: false,
             users: response.data.data,
-            fromPageOrder: response.data.meta.from
+            fromPageOrder: response.data.meta.from,
+            lastPage: response.data.meta.last_page
         });
-
-        this.lastPage = response.data.meta.last_page;
     }
 
-    nextPage = async (e: SyntheticEvent) => {
-        e.preventDefault();
-
-        if (this.page === this.lastPage) return;
-
-        this.page++;
-
-        await this.componentDidMount();
-    }
-
-    prevPage = async (e: SyntheticEvent) => {
-        e.preventDefault();
-
-        if (this.page === 1) return;
-
-        this.page--;
+    handlePageChange = async (page: number) => {
+        this.page = page;
 
         await this.componentDidMount();
     }
@@ -70,7 +56,7 @@ class UserIndex extends Component {
                     <td>{user.first_name}</td>
                     <td>{user.email}</td>
                     <td>{user.role?.name ?? '-'}</td>
-                    <td className="text-end">
+                    <td className="text-md-end">
                         <Link to={`/users/${user.id}/edit`} className="btn btn-sm btn-success me-1">
                             <Icon.Edit3 size={16} />
                         </Link>
@@ -104,7 +90,7 @@ class UserIndex extends Component {
                                 <th scope="col">Name</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Role</th>
-                                <th scope="col" className="text-end">Action</th>
+                                <th scope="col" className="text-md-end">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -112,16 +98,8 @@ class UserIndex extends Component {
                         </tbody>
                     </table>
                 </div>
-                <nav>
-                    <ul className="pagination justify-content-center">
-                        <li className="page-item">
-                            <button type="button" className="page-link" onClick={this.prevPage}>Previous</button>
-                        </li>
-                        <li className="page-item">
-                            <button type="button" className="page-link" onClick={this.nextPage}>Next</button>
-                        </li>
-                    </ul>
-                </nav>
+                
+                <Paginator lastPage={this.state.lastPage} handlePageChange={this.handlePageChange} />
             </Wrapper>
         );
     }

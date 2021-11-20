@@ -6,7 +6,7 @@ function Sidebar(props: any) {
     const location = useLocation();
     const isUserAccessOpen = ['/users', '/roles'].some(path => location.pathname.includes(path));
     const [userAccess, setUserAccess] = useState(isUserAccessOpen);
-console.log(isUserAccessOpen)
+
     return (
         <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse">
             <div className="position-sticky p-3">

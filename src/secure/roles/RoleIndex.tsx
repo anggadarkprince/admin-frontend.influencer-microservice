@@ -39,7 +39,7 @@ class RoleIndex extends Component {
                 <tr key={role.id}>
                     <td>{index + 1}</td>
                     <td>{role.name}</td>
-                    <td className="text-end">
+                    <td className="text-md-end">
                         <Edit id={role.id} endpoint={'/roles'} />
                         <Delete id={role.id} endpoint={'/roles'} handleDelete={this.handleDelete} />
                     </td>
@@ -68,7 +68,7 @@ class RoleIndex extends Component {
                             <tr>
                                 <th>#</th>
                                 <th>Name</th>
-                                <th className="text-end">Action</th>
+                                <th className="text-md-end">Action</th>
                             </tr>
                         </thead>
                         <tbody>

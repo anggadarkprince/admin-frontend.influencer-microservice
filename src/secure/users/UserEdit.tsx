@@ -133,8 +133,10 @@ class UserEdit extends Component<{ params: any }> {
     }
 }
 
-export default () => {
+function UserWithParam() {
     let params = useParams();
 
     return <UserEdit params={params} />
-};
+}
+
+export default UserWithParam;
