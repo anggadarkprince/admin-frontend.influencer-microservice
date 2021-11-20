@@ -70,8 +70,10 @@ class OrderItems extends Component<{ params: any }> {
     }
 }
 
-export default () => {
+function OrderItemsWithParam() {
     let params = useParams();
 
     return <OrderItems params={params} />
-};
+}
+
+export default OrderItemsWithParam;

@@ -80,7 +80,7 @@ class UserCreate extends Component {
 
                         <div className="mb-2">
                             <label htmlFor="role_id" className="mb-2">Role</label>
-                            <select name="role_id" id="role_id" className="form-control"
+                            <select name="role_id" id="role_id" className="form-select"
                                 onChange={e => this.roleId = parseInt(e.target.value)}>
                                 <option>Select Role</option>
                                 {this.state.roles.map(

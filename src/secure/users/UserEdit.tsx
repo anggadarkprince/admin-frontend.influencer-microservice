@@ -101,7 +101,7 @@ class UserEdit extends Component<{ params: any }> {
 
                         <div className="mb-2">
                             <label htmlFor="role_id" className="mb-2">Role</label>
-                            <select name="role_id" id="role_id" className="form-control"
+                            <select name="role_id" id="role_id" className="form-select"
                                 value={this.state.roleId}
                                 onChange={e => {
                                     this.roleId = parseInt(e.target.value);
