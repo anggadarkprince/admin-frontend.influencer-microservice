@@ -1,12 +1,13 @@
-import React, {Component, SyntheticEvent} from 'react';
-import {Navigate} from "react-router-dom";
+import React, { Component, SyntheticEvent } from 'react';
+import { Navigate } from "react-router-dom";
 import Wrapper from "../Wrapper";
 import axios from "axios";
-import {Role} from "../../classes/Role";
+import { Role } from "../../classes/Role";
 import SectionTitle from "../components/SectionTitle";
 
 class UserCreate extends Component {
     state = {
+        isSubmitting: false,
         roles: [],
         redirect: false
     }
@@ -25,6 +26,10 @@ class UserCreate extends Component {
 
     submit = async (e: SyntheticEvent) => {
         e.preventDefault();
+
+        this.setState({
+            isSubmitting: true
+        })
 
         await axios.post('users', {
             first_name: this.firstName,
@@ -45,46 +50,57 @@ class UserCreate extends Component {
 
         return (
             <Wrapper>
-                <SectionTitle title="Create User"/>
+                <SectionTitle title="Create User" />
                 <form onSubmit={this.submit}>
-                    <div className="row">
-                        <div className="col">
-                            <div className="mb-2">
-                                <label htmlFor="floatingFirstName" className="mb-2">First Name</label>
-                                <input type="text" className="form-control" id="floatingFirstName"
-                                       placeholder="Your first name" required
-                                       onChange={e => this.firstName = e.target.value} />
+                    <fieldset disabled={this.state.isSubmitting}>
+                        <div className="row">
+                            <div className="col">
+                                <div className="mb-2">
+                                    <label htmlFor="floatingFirstName" className="mb-2">First Name</label>
+                                    <input type="text" className="form-control" id="floatingFirstName"
+                                        placeholder="Your first name" required
+                                        onChange={e => this.firstName = e.target.value} />
+                                </div>
+                            </div>
+                            <div className="col">
+                                <div className="mb-3">
+                                    <label htmlFor="floatingLastName" className="mb-2">Last Name</label>
+                                    <input type="text" className="form-control" id="floatingLastName"
+                                        placeholder="Your last name" required
+                                        onChange={e => this.lastName = e.target.value} />
+                                </div>
                             </div>
                         </div>
-                        <div className="col">
-                            <div className="mb-3">
-                                <label htmlFor="floatingLastName" className="mb-2">Last Name</label>
-                                <input type="text" className="form-control" id="floatingLastName"
-                                       placeholder="Your last name" required
-                                       onChange={e => this.lastName = e.target.value}/>
-                            </div>
+                        <div className="mb-3">
+                            <label htmlFor="floatingEmail" className="mb-2">Email address</label>
+                            <input type="email" className="form-control" id="floatingEmail"
+                                placeholder="name@example.com" required
+                                onChange={e => this.email = e.target.value} />
                         </div>
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="floatingEmail" className="mb-2">Email address</label>
-                        <input type="email" className="form-control" id="floatingEmail"
-                               placeholder="name@example.com" required
-                               onChange={e => this.email = e.target.value}/>
-                    </div>
 
-                    <div className="mb-2">
-                        <label htmlFor="role_id" className="mb-2">Role</label>
-                        <select name="role_id" id="role_id" className="form-control"
+                        <div className="mb-2">
+                            <label htmlFor="role_id" className="mb-2">Role</label>
+                            <select name="role_id" id="role_id" className="form-control"
                                 onChange={e => this.roleId = parseInt(e.target.value)}>
-                            <option>Select Role</option>
-                            {this.state.roles.map(
-                                (role: Role) => {
-                                    return <option key={role.id} value={role.id}>{role.name}</option>
-                                }
-                            )}
-                        </select>
-                    </div>
-                    <button className="btn btn-primary mt-3" type="submit">Save</button>
+                                <option>Select Role</option>
+                                {this.state.roles.map(
+                                    (role: Role) => {
+                                        return <option key={role.id} value={role.id}>{role.name}</option>
+                                    }
+                                )}
+                            </select>
+                        </div>
+                        
+                        {this.state.isSubmitting
+                            ? (
+                                <button className="btn btn-primary mt-3" disabled type="submit">
+                                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                    Saving...
+                                </button>
+                            )
+                            : <button className="btn btn-primary mt-3" type="submit">Save</button>
+                        }
+                    </fieldset>
                 </form>
             </Wrapper>
         );
