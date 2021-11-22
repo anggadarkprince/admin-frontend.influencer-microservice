@@ -7,6 +7,7 @@ export class Order {
     last_name: string;
     email: string;
     total: number;
+    created_at: string;
     order_items: OrderItem[];
 
     constructor(id = 0, first_name = '', last_name = '', email = '', total = 0, order_items = []) {
@@ -16,5 +17,6 @@ export class Order {
         this.email = email;
         this.total = total;
         this.order_items = order_items;
+        this.created_at = '';
     }
 }

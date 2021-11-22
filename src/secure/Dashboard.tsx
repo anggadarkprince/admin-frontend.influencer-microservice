@@ -1,12 +1,18 @@
-import * as Icon from "react-feather";
-import React, { Component } from "react";
+import React, {Component, SyntheticEvent} from "react";
 import Wrapper from "./Wrapper";
 import c3 from 'c3';
 import 'c3/c3.css';
 import axios from "axios";
 import { formatThousands } from "../helpers/NumberFormat";
+import LoadingRow from "./components/LoadingRow";
+import {Order} from "../classes/Order";
+import {Link} from "react-router-dom";
 
 class Dashboard extends Component {
+    state = {
+        isLoading: true,
+        transactions: []
+    }
 
     componentDidMount = async () => {
         let chart = c3.generate({
@@ -51,6 +57,25 @@ class Dashboard extends Component {
                 ['Sales', ...records.map(r => r.sum)]
             ]
         })
+
+        const transactions = await axios.get('orders/latest');
+
+        this.setState({
+            isLoading: false,
+            transactions: transactions.data.data,
+        })
+    }
+
+    handleExport = async (e: SyntheticEvent) => {
+        e.preventDefault();
+
+        const response = await axios.get('export', {responseType: 'blob'});
+        //const blob = new Blob([response.data], {type: 'text/csv'});
+        const downloadUrl = window.URL.createObjectURL(response.data)
+        const link = document.createElement('a')
+        link.href = downloadUrl
+        link.download = "order.csv";
+        link.click();
     }
 
     render() {
@@ -60,13 +85,9 @@ class Dashboard extends Component {
                     <h1 className="h3 fw-bold">Dashboard</h1>
                     <div className="btn-toolbar mb-2 mb-md-0">
                         <div className="btn-group me-2">
-                            <button type="button" className="btn btn-sm btn-outline-secondary">Share</button>
-                            <button type="button" className="btn btn-sm btn-outline-secondary">Export</button>
+                            <Link to={'/orders'} className="btn btn-sm btn-outline-secondary">Orders</Link>
+                            <Link to={'/exports'} className="btn btn-sm btn-outline-secondary" onClick={this.handleExport}>Export</Link>
                         </div>
-                        <button type="button" className="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center">
-                            <Icon.Calendar size={16} className="me-2" />
-                            This week
-                        </button>
                     </div>
                 </div>
 
@@ -85,19 +106,25 @@ class Dashboard extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1,001</td>
-                                <td>random</td>
-                                <td>data</td>
-                                <td>placeholder</td>
-                                <td>text</td>
-                            </tr>
+                        {this.state.isLoading ? <LoadingRow colSpan={6} /> : this.state.transactions.map(
+                            (order: Order, index: number) => {
+                                return (
+                                    <tr key={order.id}>
+                                        <td>{index + 1}</td>
+                                        <td>{(new Date(order.created_at)).toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</td>
+                                        <td>{order.transaction_id}</td>
+                                        <td>{formatThousands(order.total, 'IDR ')}</td>
+                                        <td>{order.first_name}</td>
+                                    </tr>
+                                )
+                            }
+                        )}
                         </tbody>
                     </table>
                 </div>
             </Wrapper>
         )
     }
-};
+}
 
 export default Dashboard;
