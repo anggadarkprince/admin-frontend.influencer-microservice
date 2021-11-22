@@ -15,6 +15,8 @@ class Dashboard extends Component {
     }
 
     componentDidMount = async () => {
+        document.title = 'Dashboard';
+
         let chart = c3.generate({
             bindto: '#chart',
             data: {

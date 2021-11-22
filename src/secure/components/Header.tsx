@@ -1,24 +1,38 @@
 import React from "react";
 import * as Icon from "react-feather";
+import {Link} from "react-router-dom";
 
 const Header = (props: any) => (
-    <header className="navbar navbar-light sticky-top bg-light flex-md-nowrap p-0 shadow">
-        <a className="navbar-brand bg-dark text-light col-md-3 col-lg-2 me-0 px-3" href="#">
+    <header className="navbar navbar-light navbar-expand sticky-top bg-light p-0 shadow">
+        <Link to={'/dashboard'} className="navbar-brand bg-dark text-light col-md-3 col-lg-2 me-0 px-3">
             <Icon.Activity size={24} className="me-2" />Adminer
-        </a>
-        <button className="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
+        </Link>
+        <button className="navbar-togglers position-absolutes d-md-none collapsed" type="button" data-bs-toggle="collapse"
                 data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
                 aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"/>
         </button>
         <input className="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"/>
         <div className="navbar-nav">
-            <div className="nav-item text-nowrap">
-                <a className="nav-link px-3" href="/logout" onClick={props.handleSignOut}>
-                    Sign Out
-                    <Icon.LogOut size={16} className="ms-2" />
+            <li className="nav-item dropdown me-2">
+                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                    {props.user?.first_name || 'My Account'}
                 </a>
-            </div>
+                <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <li>
+                        <Link to={'/profile'} className="dropdown-item">
+                            <Icon.User size={16} className="me-2" />Profile
+                        </Link>
+                    </li>
+                    <li><hr className="dropdown-divider"/></li>
+                    <li>
+                        <Link to={'/logout'} className="dropdown-item" onClick={props.handleSignOut}>
+                            <Icon.LogOut size={16} className="me-2" />Sign Out
+                        </Link>
+                    </li>
+                </ul>
+            </li>
         </div>
     </header>
 );

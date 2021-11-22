@@ -3,20 +3,30 @@ import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import axios from 'axios';
 import {Navigate} from "react-router-dom";
+import {User} from "../classes/User";
 
 class Wrapper extends Component {
     state = {
-        redirect: false
+        redirect: false,
+        user: new User()
     }
 
     componentDidMount = async () => {
-        try {
-            const response = await axios.get('user')
-            console.log(response);
-        } catch(e) {
-            this.setState({
-                redirect: true
-            });
+        if (!localStorage.getItem('token')) {
+            window.location.href = '/login';
+        } else {
+            try {
+                const response = await axios.get('user')
+                const user: User = response.data.data;
+
+                this.setState({
+                    user: user
+                })
+            } catch(e) {
+                this.setState({
+                    redirect: true
+                });
+            }
         }
     }
 
@@ -36,7 +46,7 @@ class Wrapper extends Component {
         }
         return (
             <>
-                <Header handleSignOut={this.handleSignOut}/>
+                <Header handleSignOut={this.handleSignOut} user={this.state.user}/>
                 <div className="container-fluid">
                     <div className="row">
                         <Sidebar handleSignOut={this.handleSignOut}/>

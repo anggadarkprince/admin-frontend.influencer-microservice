@@ -10,6 +10,7 @@ import Roles from "./secure/roles/Roles";
 import Products from "./secure/products/Products";
 import Orders from "./secure/orders/Orders";
 import OrderItems from "./secure/orders/OrderItems";
+import Profile from "./secure/profile/Profile";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Routes>
             <Route path={'/'} element={<RedirectToDashboard/>} />
             <Route path={'/dashboard'} element={<Dashboard/>} />
+            <Route path={'/profile'} element={<Profile/>} />
             <Route path={'/login'} element={<Login/>} />
             <Route path={'/register'} element={<Register/>} />
             <Route path={'/users/*'} element={<Users/>} />
