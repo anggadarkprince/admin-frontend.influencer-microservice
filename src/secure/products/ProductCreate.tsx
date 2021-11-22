@@ -17,6 +17,10 @@ class ProductCreate extends Component {
     image = '';
     price = 0;
 
+    componentDidMount() {
+        document.title = 'Create Product';
+    }
+
     submit = async (e: SyntheticEvent) => {
         e.preventDefault();
 

@@ -17,6 +17,8 @@ class UserCreate extends Component {
     roleId = 0;
 
     componentDidMount = async () => {
+        document.title = 'Create User';
+
         const response = await axios.get('roles');
 
         this.setState({

@@ -20,6 +20,8 @@ class RoleEdit extends Component<{ params: any }> {
     id = 0;
 
     componentDidMount = async () => {
+        document.title = 'Edit Role';
+
         this.id = this.props.params.id;
 
         const permissionCall = await axios.get('permissions');

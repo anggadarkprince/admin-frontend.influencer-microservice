@@ -19,6 +19,8 @@ class Orders extends Component {
     page = 1;
 
     componentDidMount = async () => {
+        document.title = 'Orders';
+
         this.setState({
             isLoading: true
         });

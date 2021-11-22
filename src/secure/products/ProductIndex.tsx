@@ -21,6 +21,8 @@ class ProductIndex extends Component {
     page = 1;
 
     componentDidMount = async () => {
+        document.title = 'Products';
+
         this.setState({
             isLoading: true
         });

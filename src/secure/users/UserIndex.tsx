@@ -17,6 +17,8 @@ class UserIndex extends Component {
     page = 1;
 
     componentDidMount = async () => {
+        document.title = 'Users';
+
         this.setState({
             isLoading: true
         });

@@ -3,28 +3,10 @@ import * as Icon from "react-feather";
 import {NavLink, useLocation} from "react-router-dom";
 import axios from "axios";
 
-const getUser = async () => {
-    const response = await axios.get('user');
-
-    return response;
-}
-
 function Sidebar(props: any) {
     const location = useLocation();
     const isUserAccessOpen = ['/users', '/roles'].some(path => location.pathname.includes(path));
     const [userAccess, setUserAccess] = useState(isUserAccessOpen);
-    const [userData, setUserData] = useState({});
-
-    const getUser = useCallback(async () => {
-        let response = await fetch('user')
-        response = await response.json();
-        setUserData(response)
-    }, [])
-
-    useEffect(() => {
-        //getUser();
-
-    }, []);
 
     return (
         <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse">

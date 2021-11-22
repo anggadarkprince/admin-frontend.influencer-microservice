@@ -24,6 +24,8 @@ class UserEdit extends Component<{ params: any }> {
     roleId = 0;
 
     componentDidMount = async () => {
+        document.title = 'Edit User';
+
         this.id = this.props.params.id;
 
         const rolesCall = await axios.get('roles');

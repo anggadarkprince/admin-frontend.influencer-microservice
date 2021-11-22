@@ -24,6 +24,8 @@ class ProductEdit extends Component<{ params: any }> {
     price = 0;
 
     componentDidMount = async () => {
+        document.title = 'Edit Product';
+
         this.id = this.props.params.id;
 
         const response = await axios.get(`products/${this.id}`);

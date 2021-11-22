@@ -17,11 +17,15 @@ class OrderItems extends Component<{ params: any }> {
     id = 0;
 
     componentDidMount = async () => {
+        document.title = 'Order Item';
+
         this.id = this.props.params.id;
 
         const response = await axios.get(`orders/${this.id}`);
 
         const order: Order = response.data.data;
+
+        document.title = 'Order ' + order.transaction_id;
 
         this.setState({
             isLoading: false,

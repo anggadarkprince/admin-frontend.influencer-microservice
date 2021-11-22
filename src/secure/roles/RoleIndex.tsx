@@ -15,6 +15,8 @@ class RoleIndex extends Component {
     }
 
     componentDidMount = async () => {
+        document.title = 'Roles';
+
         this.setState({
             isLoading: true
         });
