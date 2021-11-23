@@ -1,8 +1,10 @@
 import React from "react";
 import * as Icon from "react-feather";
 import {Link} from "react-router-dom";
+import {connect} from "react-redux";
+import {User} from "../../classes/User";
 
-const Header = (props: any) => (
+const Header = (props: { user: User, handleSignOut: any }) => (
     <header className="navbar navbar-light navbar-expand sticky-top bg-light p-0 shadow">
         <Link to={'/dashboard'} className="navbar-brand bg-dark text-light col-md-3 col-lg-2 me-0 px-3">
             <Icon.Activity size={24} className="me-2" />Adminer
@@ -37,4 +39,12 @@ const Header = (props: any) => (
     </header>
 );
 
-export default Header;
+const mapStateToProps = (state: {user: User}) => {
+    return {
+        user: state.user
+    }
+}
+
+const connectToRedux = connect(mapStateToProps);
+
+export default connectToRedux(Header);

@@ -1,11 +1,13 @@
-import React, {Component, SyntheticEvent} from 'react';
+import React, {Component, Dispatch, PropsWithChildren, SyntheticEvent} from 'react';
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import axios from 'axios';
 import {Navigate} from "react-router-dom";
 import {User} from "../classes/User";
+import {connect} from 'react-redux';
+import setUser from "../redux/actions/setUserAction";
 
-class Wrapper extends Component {
+class Wrapper extends Component<PropsWithChildren<{ user: User, setUser: any }>> {
     state = {
         redirect: false,
         user: new User()
@@ -18,6 +20,8 @@ class Wrapper extends Component {
             try {
                 const response = await axios.get('user')
                 const user: User = response.data.data;
+
+                this.props.setUser(user);
 
                 this.setState({
                     user: user
@@ -46,7 +50,7 @@ class Wrapper extends Component {
         }
         return (
             <>
-                <Header handleSignOut={this.handleSignOut} user={this.state.user}/>
+                <Header handleSignOut={this.handleSignOut} />
                 <div className="container-fluid">
                     <div className="row">
                         <Sidebar handleSignOut={this.handleSignOut}/>
@@ -61,4 +65,19 @@ class Wrapper extends Component {
     }
 }
 
-export default Wrapper;
+const mapStateToProps = (state: {user: User, isLoading: boolean}) => {
+    return {
+        user: state.user,
+        isUserLoading: state.isLoading
+    }
+}
+
+const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+    return {
+        setUser: (user: User) => dispatch(setUser(user))
+    }
+}
+
+const connectToRedux = connect(mapStateToProps, mapDispatchToProps);
+
+export default connectToRedux(Wrapper);

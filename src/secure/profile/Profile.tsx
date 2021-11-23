@@ -1,15 +1,15 @@
-import React, {Component, SyntheticEvent} from "react";
+import React, {Component, Dispatch, SyntheticEvent} from "react";
 import axios from "axios";
 import {User} from "../../classes/User";
 import Wrapper from "../Wrapper";
 import SectionTitle from "../components/SectionTitle";
+import {connect} from "react-redux";
+import setUser from "../../redux/actions/setUserAction";
 
-class Profile extends Component {
+class Profile extends Component<{user: User, setUser: any, isUserLoading: boolean}> {
     state = {
         isSubmittingProfile: false,
         isSubmittingPassword: false,
-        isLoading: true,
-        user: new User(),
         first_name: '',
         last_name: '',
         email: '',
@@ -22,16 +22,6 @@ class Profile extends Component {
 
     componentDidMount = async () => {
         document.title = "Update Profile"
-        const response = await axios.get('user')
-        const user:User = response.data.data;
-
-        this.setState({
-            user: user,
-            first_name: user.first_name,
-            last_name: user.last_name,
-            email: user.email,
-            isLoading: false,
-        })
     }
 
     updateInfo = async (e: SyntheticEvent) => {
@@ -47,9 +37,12 @@ class Profile extends Component {
             email: this.email,
         });
 
+        const user: User = response.data;
+
+        this.props.setUser(user);
+
         this.setState({
-            user: response.data,
-            isSubmittingProfile: false,
+            isSubmittingProfile: false
         })
     }
 
@@ -76,13 +69,13 @@ class Profile extends Component {
             <Wrapper>
                 <SectionTitle title="Account Information"/>
                 <form onSubmit={this.updateInfo} className="mb-3">
-                    <fieldset disabled={this.state.isSubmittingProfile || this.state.isLoading}>
+                    <fieldset disabled={this.state.isSubmittingProfile || this.props.isUserLoading}>
                         <div className="row">
                             <div className="col-sm-6">
                                 <div className="mb-2">
                                     <label className="mb-2" htmlFor="first_name">First Name</label>
                                     <input type="text" className="form-control" name="first_name" id="first_name" placeholder="Your first name"
-                                           defaultValue={this.first_name = this.state.user.first_name}
+                                           defaultValue={this.first_name = this.props.user.first_name}
                                            onChange={e => this.first_name = e.target.value}/>
                                 </div>
                             </div>
@@ -90,7 +83,7 @@ class Profile extends Component {
                                 <div className="mb-2">
                                     <label className="mb-2" htmlFor="last_name">Last Name</label>
                                     <input type="text" className="form-control" name="last_name" id="last_name" placeholder="Last name"
-                                           defaultValue={this.last_name = this.state.user.last_name}
+                                           defaultValue={this.last_name = this.props.user.last_name}
                                            onChange={e => this.last_name = e.target.value}/>
                                 </div>
                             </div>
@@ -98,7 +91,7 @@ class Profile extends Component {
                         <div className="mb-2">
                             <label className="mb-2" htmlFor="email">Email</label>
                             <input type="email" className="form-control" name="email" id="email" placeholder="Email address"
-                                   defaultValue={this.email = this.state.user.email}
+                                   defaultValue={this.email = this.props.user.email}
                                    onChange={e => this.email = e.target.value}/>
                         </div>
 
@@ -116,7 +109,7 @@ class Profile extends Component {
 
                 <SectionTitle title="Change Password"/>
                 <form onSubmit={this.updatePassword}>
-                    <fieldset disabled={this.state.isSubmittingPassword || this.state.isLoading}>
+                    <fieldset disabled={this.state.isSubmittingPassword || this.props.isUserLoading}>
                         <div className="row">
                             <div className="col-sm-6">
                                 <div className="mb-2">
@@ -149,4 +142,19 @@ class Profile extends Component {
     }
 }
 
-export default Profile;
+const mapStateToProps = (state: {user: User, isLoading: boolean}) => {
+    return {
+        user: state.user,
+        isUserLoading: state.isLoading
+    }
+}
+
+const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+    return {
+        setUser: (user: User) => dispatch(setUser(user))
+    }
+}
+
+const connectToRedux = connect(mapStateToProps, mapDispatchToProps)
+
+export default connectToRedux(Profile);
