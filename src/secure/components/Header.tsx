@@ -19,7 +19,7 @@ const Header = (props: { user: User, handleSignOut: any }) => (
             <li className="nav-item dropdown me-2">
                 <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                    data-bs-toggle="dropdown" aria-expanded="false">
-                    {props.user?.first_name || 'My Account'}
+                    {props.user?.name || 'My Account'}
                 </a>
                 <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                     <li>

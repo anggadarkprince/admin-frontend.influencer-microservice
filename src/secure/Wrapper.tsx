@@ -18,15 +18,18 @@ class Wrapper extends Component<PropsWithChildren<{ user: User, setUser: any }>>
             window.location.href = '/login';
         } else {
             try {
-                const response = await axios.get('user')
-                const user: User = response.data.data;
+                if (this.props.user.id === 0) {
+                    const response = await axios.get('user');
 
-                this.props.setUser(user);
+                    const user: User = Object.assign(new User(), response.data.data);
 
-                this.setState({
-                    user: user
-                })
-            } catch(e) {
+                    this.props.setUser(user);
+
+                    this.setState({
+                        user: user
+                    });
+                }
+            } catch (e) {
                 this.setState({
                     redirect: true
                 });
@@ -46,11 +49,11 @@ class Wrapper extends Component<PropsWithChildren<{ user: User, setUser: any }>>
 
     render() {
         if (this.state.redirect) {
-            return <Navigate to={'/login'} />;
+            return <Navigate to={'/login'}/>;
         }
         return (
             <>
-                <Header handleSignOut={this.handleSignOut} />
+                <Header handleSignOut={this.handleSignOut}/>
                 <div className="container-fluid">
                     <div className="row">
                         <Sidebar handleSignOut={this.handleSignOut}/>
@@ -65,7 +68,7 @@ class Wrapper extends Component<PropsWithChildren<{ user: User, setUser: any }>>
     }
 }
 
-const mapStateToProps = (state: {user: User, isLoading: boolean}) => {
+const mapStateToProps = (state: { user: User, isLoading: boolean }) => {
     return {
         user: state.user,
         isUserLoading: state.isLoading
