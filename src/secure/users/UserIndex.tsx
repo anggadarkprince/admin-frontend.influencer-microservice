@@ -6,8 +6,10 @@ import * as Icon from "react-feather";
 import { Link } from "react-router-dom";
 import LoadingRow from "../components/LoadingRow";
 import Paginator from "../components/Paginator";
+import {connect} from "react-redux";
+import SectionTitleAction from "../components/SectionTitleAction";
 
-class UserIndex extends Component {
+class UserIndex extends Component<{user: User}> {
     state = {
         isLoading: true,
         fromPageOrder: 1,
@@ -51,6 +53,9 @@ class UserIndex extends Component {
     }
 
     renderUserTableContent() {
+        if (this.state.users.length === 0) {
+            return <tr><td colSpan={5}>No data available</td></tr>
+        }
         return this.state.users.map((user: User, index: number) => {
             return (
                 <tr key={user.id}>
@@ -59,12 +64,19 @@ class UserIndex extends Component {
                     <td>{user.email}</td>
                     <td>{user.role?.name ?? '-'}</td>
                     <td className="text-md-end">
-                        <Link to={`/users/${user.id}/edit`} className="btn btn-sm btn-success me-1">
-                            <Icon.Edit3 size={16} />
-                        </Link>
-                        <Link to={`/users/${user.id}`} onClick={(e) => this.delete(e, user.id)} className="btn btn-sm btn-danger">
-                            <Icon.Trash2 size={16} />
-                        </Link>
+                        {
+                            this.props.user.canEdit('users') &&
+                            <Link to={`/users/${user.id}/edit`} className="btn btn-sm btn-success me-1">
+                                <Icon.Edit3 size={16} />
+                            </Link>
+                        }
+                        {
+                            this.props.user.canDelete('users') &&
+                            <Link to={`/users/${user.id}`} onClick={(e) => this.delete(e, user.id)}
+                                  className="btn btn-sm btn-danger">
+                                <Icon.Trash2 size={16}/>
+                            </Link>
+                        }
                     </td>
                 </tr>
             )
@@ -74,16 +86,16 @@ class UserIndex extends Component {
     render() {
         return (
             <Wrapper>
-                <div
-                    className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 className="h3 fw-bold">Users</h1>
-                    <div className="btn-toolbar mb-2 mb-md-0">
+                <SectionTitleAction title={"Users"}>
+                    {
+                        this.props.user.canCreate('users') &&
                         <Link to={'/users/create'} className="btn btn-sm btn-primary">
-                            <Icon.Plus size={16} className="me-1" />
+                            <Icon.Plus size={16} className="me-1"/>
                             ADD
                         </Link>
-                    </div>
-                </div>
+                    }
+                </SectionTitleAction>
+
                 <div className="table-responsive">
                     <table className="table table-striped table-sm">
                         <thead>
@@ -107,4 +119,12 @@ class UserIndex extends Component {
     }
 }
 
-export default UserIndex;
+const mapStateToProps = (state: {user: User}) => {
+    return {
+        user: state.user
+    }
+}
+
+const connectToRedux = connect(mapStateToProps);
+
+export default connectToRedux(UserIndex);

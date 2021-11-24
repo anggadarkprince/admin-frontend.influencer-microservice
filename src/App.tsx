@@ -29,8 +29,9 @@ function App() {
             <Route
                 path="*"
                 element={
-                    <main style={{ padding: "1rem" }}>
-                        <p>Page Not Found!</p>
+                    <main className="text-center" style={{ padding: "1rem" }}>
+                        <h1 className="text-danger">404</h1>
+                        <p className="h4">Page Not Found!</p>
                     </main>
                 }
             />

@@ -10,8 +10,10 @@ import * as Icon from "react-feather";
 import Paginator from "../components/Paginator";
 import { formatThousands } from "../../helpers/NumberFormat";
 import LoadingRow from "../components/LoadingRow";
+import {User} from "../../classes/User";
+import {connect} from "react-redux";
 
-class ProductIndex extends Component {
+class ProductIndex extends Component<{ user: User }> {
     state = {
         isLoading: true,
         fromPageOrder: 1,
@@ -51,18 +53,40 @@ class ProductIndex extends Component {
 
     toolbars = () => {
         return (
+            this.props.user.canCreate('products') &&
             <Link to={'/products/create'} className="btn btn-sm btn-primary">
                 <Icon.Plus size={16} className="me-1" />
                 ADD
-            </Link>)
+            </Link>
+        )
     }
 
     actions = (id: number) => {
         return (
             <div className="btn-group mr-2">
-                {<Edit id={id} endpoint={'/products'} />}
-                {<Delete id={id} endpoint={'/products'} handleDelete={this.handleDelete} />}
+                {this.props.user.canEdit('products') && <Edit id={id} endpoint={'/products'} />}
+                {this.props.user.canDelete('products') && <Delete id={id} endpoint={'/products'} handleDelete={this.handleDelete} />}
             </div>
+        )
+    }
+
+    renderRoleTableContent() {
+        if (this.state.products.length === 0) {
+            return <tr><td colSpan={6}>No data available</td></tr>
+        }
+        return this.state.products.map(
+            (product: Product) => {
+                return (
+                    <tr key={product.id}>
+                        <td>{product.id}</td>
+                        <td><img src={product.image} width="50" alt={product.title} /></td>
+                        <td>{product.title}</td>
+                        <td>{product.description}</td>
+                        <td className="text-nowrap">{formatThousands(product.price, 'IDR ')}</td>
+                        <td className="text-md-end">{this.actions(product.id)}</td>
+                    </tr>
+                )
+            }
         )
     }
 
@@ -81,20 +105,7 @@ class ProductIndex extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.isLoading ? <LoadingRow colSpan={6} /> : this.state.products.map(
-                            (product: Product) => {
-                                return (
-                                    <tr key={product.id}>
-                                        <td>{product.id}</td>
-                                        <td><img src={product.image} width="50" alt={product.title} /></td>
-                                        <td>{product.title}</td>
-                                        <td>{product.description}</td>
-                                        <td className="text-nowrap">{formatThousands(product.price, 'IDR ')}</td>
-                                        <td className="text-md-end">{this.actions(product.id)}</td>
-                                    </tr>
-                                )
-                            }
-                        )}
+                        {this.state.isLoading ? <LoadingRow colSpan={6} /> : this.renderRoleTableContent()}
                     </tbody>
                 </table>
             </div>
@@ -116,4 +127,12 @@ class ProductIndex extends Component {
     }
 }
 
-export default ProductIndex;
+const mapStateToProps = (state: {user: User}) => {
+    return {
+        user: state.user
+    }
+}
+
+const connectToRedux = connect(mapStateToProps);
+
+export default connectToRedux(ProductIndex);

@@ -7,8 +7,11 @@ import * as Icon from "react-feather";
 import Delete from "../components/Delete";
 import Edit from "../components/Edit";
 import LoadingRow from "../components/LoadingRow";
+import {User} from "../../classes/User";
+import {connect} from "react-redux";
+import SectionTitleAction from "../components/SectionTitleAction";
 
-class RoleIndex extends Component {
+class RoleIndex extends Component<{user: User}> {
     state = {
         isLoading: true,
         roles: []
@@ -36,14 +39,23 @@ class RoleIndex extends Component {
     }
 
     renderRoleTableContent() {
+        if (this.state.roles.length === 0) {
+            return <tr><td colSpan={3}>No data available</td></tr>
+        }
         return this.state.roles.map((role: Role, index: number) => {
             return (
                 <tr key={role.id}>
                     <td>{index + 1}</td>
                     <td>{role.name}</td>
                     <td className="text-md-end">
-                        <Edit id={role.id} endpoint={'/roles'} />
-                        <Delete id={role.id} endpoint={'/roles'} handleDelete={this.handleDelete} />
+                        {
+                            this.props.user.canEdit('roles') &&
+                            <Edit id={role.id} endpoint={'/roles'}/>
+                        }
+                        {
+                            this.props.user.canDelete('roles') &&
+                            <Delete id={role.id} endpoint={'/roles'} handleDelete={this.handleDelete}/>
+                        }
                     </td>
                 </tr>
             )
@@ -53,16 +65,15 @@ class RoleIndex extends Component {
     render() {
         return (
             <Wrapper>
-                <div
-                    className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 className="h3 fw-bold">Roles</h1>
-                    <div className="btn-toolbar mb-2 mb-md-0">
+                <SectionTitleAction title={"Roles"}>
+                    {
+                        this.props.user.canCreate('roles') &&
                         <Link to={'/roles/create'} className="btn btn-sm btn-primary">
-                            <Icon.Plus size={16} className="me-1" />
+                            <Icon.Plus size={16} className="me-1"/>
                             ADD
                         </Link>
-                    </div>
-                </div>
+                    }
+                </SectionTitleAction>
 
                 <div className="table-responsive">
                     <table className="table table-striped table-sm">
@@ -83,4 +94,12 @@ class RoleIndex extends Component {
     }
 }
 
-export default RoleIndex;
+const mapStateToProps = (state: {user: User}) => {
+    return {
+        user: state.user
+    }
+}
+
+const connectToRedux = connect(mapStateToProps);
+
+export default connectToRedux(RoleIndex);

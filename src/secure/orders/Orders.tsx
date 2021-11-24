@@ -8,8 +8,10 @@ import { Order } from "../../classes/Order";
 import Paginator from "../components/Paginator";
 import { formatThousands } from "../../helpers/NumberFormat";
 import LoadingRow from '../components/LoadingRow';
+import {User} from "../../classes/User";
+import {connect} from "react-redux";
 
-class Orders extends Component {
+class Orders extends Component<{ user: User }> {
     state = {
         isLoading: true,
         fromPageOrder: 1,
@@ -45,7 +47,7 @@ class Orders extends Component {
         e.preventDefault();
 
         const response = await axios.get('export', {responseType: 'blob'});
-        const blob = new Blob([response.data], {type: 'text/csv'});
+        //const blob = new Blob([response.data], {type: 'text/csv'});
         const downloadUrl = window.URL.createObjectURL(response.data)
         const link = document.createElement('a')
         link.href = downloadUrl
@@ -55,10 +57,12 @@ class Orders extends Component {
 
     toolbars = () => {
         return (
-        <Link to={'/export'} className="btn btn-sm btn-success" onClick={this.handleExport}>
-            <Icon.File size={16} className="me-1" />
-            EXPORT
-        </Link>);
+            this.props.user.canView('orders') &&
+            <Link to={'/export'} className="btn btn-sm btn-success" onClick={this.handleExport}>
+                <Icon.File size={16} className="me-1" />
+                EXPORT
+            </Link>
+        );
     }
 
     render() {
@@ -90,10 +94,13 @@ class Orders extends Component {
                                             <td>{formatThousands(order.total, 'IDR ')}</td>
                                             <td className="text-md-end">
                                                 <div className="btn-group mr-2">
-                                                    <Link to={`/orders/${order.id}`} className="btn btn-sm btn-primary">
-                                                        <Icon.Eye size={16} className="me-1" />
-                                                        View
-                                                    </Link>
+                                                    {
+                                                        this.props.user.canView('orders') &&
+                                                        <Link to={`/orders/${order.id}`} className="btn btn-sm btn-primary">
+                                                            <Icon.Eye size={16} className="me-1"/>
+                                                            View
+                                                        </Link>
+                                                    }
                                                 </div>
                                             </td>
                                         </tr>
@@ -110,4 +117,12 @@ class Orders extends Component {
     }
 }
 
-export default Orders;
+const mapStateToProps = (state: {user: User}) => {
+    return {
+        user: state.user
+    }
+}
+
+const connectToRedux = connect(mapStateToProps);
+
+export default connectToRedux(Orders);

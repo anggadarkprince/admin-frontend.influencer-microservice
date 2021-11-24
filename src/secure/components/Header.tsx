@@ -17,7 +17,7 @@ const Header = (props: { user: User, handleSignOut: any }) => (
         <input className="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"/>
         <div className="navbar-nav">
             <li className="nav-item dropdown me-2">
-                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                <a className="nav-link dropdown-toggle" href="/profile" id="navbarDropdown" role="button"
                    data-bs-toggle="dropdown" aria-expanded="false">
                     {props.user?.name || 'My Account'}
                 </a>
