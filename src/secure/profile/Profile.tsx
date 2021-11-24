@@ -37,7 +37,7 @@ class Profile extends Component<{user: User, setUser: any, isUserLoading: boolea
             email: this.email,
         });
 
-        const user: User = response.data;
+        const user: User = Object.assign(new User(), response.data);
 
         this.props.setUser(user);
 

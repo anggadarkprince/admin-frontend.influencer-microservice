@@ -14,9 +14,9 @@ class Wrapper extends Component<PropsWithChildren<{ user: User, setUser: any }>>
     }
 
     componentDidMount = async () => {
-        if (!localStorage.getItem('token')) {
-            window.location.href = '/login';
-        } else {
+        //if (!localStorage.getItem('token')) {
+        //    window.location.href = '/login';
+        //} else {
             try {
                 if (this.props.user.id === 0) {
                     const response = await axios.get('user');
@@ -34,13 +34,15 @@ class Wrapper extends Component<PropsWithChildren<{ user: User, setUser: any }>>
                     redirect: true
                 });
             }
-        }
+        //}
     }
 
-    handleSignOut = (e: SyntheticEvent) => {
+    handleSignOut = async (e: SyntheticEvent) => {
         e.preventDefault();
 
-        localStorage.clear();
+        await axios.post('logout', {});
+
+        //localStorage.clear();
 
         this.setState({
             redirect: true

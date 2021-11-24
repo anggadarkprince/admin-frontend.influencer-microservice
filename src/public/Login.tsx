@@ -1,10 +1,13 @@
-import React, {Component, SyntheticEvent} from 'react';
+import React, {Component, Dispatch, SyntheticEvent} from 'react';
 import './Public.css';
 import * as Icon from "react-feather";
 import axios from "axios";
 import {Navigate, Link} from "react-router-dom";
+import {User} from "../classes/User";
+import setUser from "../redux/actions/setUserAction";
+import {connect} from "react-redux";
 
-class Login extends Component<any, any> {
+class Login extends Component<{user: User, setUser: any}> {
     email = '';
     password = '';
     state = {
@@ -18,9 +21,12 @@ class Login extends Component<any, any> {
             email: this.email,
             password: this.password
         });
+        const user: User = Object.assign(new User(), response.data.user);
 
-        localStorage.setItem('token', response.data.token);
-        axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+        this.props.setUser(user);
+
+        //localStorage.setItem('token', response.data.token);
+        //axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
 
         this.setState({
             redirect: true
@@ -60,4 +66,19 @@ class Login extends Component<any, any> {
     }
 }
 
-export default Login;
+const mapStateToProps = (state: {user: User, isLoading: boolean}) => {
+    return {
+        user: state.user,
+        isUserLoading: state.isLoading
+    }
+}
+
+const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+    return {
+        setUser: (user: User) => dispatch(setUser(user))
+    }
+}
+
+const connectToRedux = connect(mapStateToProps, mapDispatchToProps)
+
+export default connectToRedux(Login);
