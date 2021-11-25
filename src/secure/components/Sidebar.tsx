@@ -98,16 +98,16 @@ function Sidebar(props: { user: User, handleSignOut: any }) {
                         </h6>
                         <ul className="nav flex-column mb-2">
                             <li className="nav-item">
-                                <a className="nav-link d-flex align-items-center" href="/report/current-month">
+                                <NavLink className="nav-link d-flex align-items-center" to="/reports/current-month">
                                     <Icon.FileText size={16} className="me-2"/>
                                     Current Month
-                                </a>
+                                </NavLink>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link d-flex align-items-center" href="/report/last-quarter">
+                                <NavLink className="nav-link d-flex align-items-center" to="/reports/last-quarter">
                                     <Icon.FileText size={16} className="me-2"/>
                                     Last Quarter
-                                </a>
+                                </NavLink>
                             </li>
                         </ul>
                     </>

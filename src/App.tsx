@@ -15,6 +15,9 @@ import axios from "axios";
 import {User} from "./classes/User";
 import setUser from "./redux/actions/setUserAction";
 import {connect} from "react-redux";
+import Reports from "./secure/reports/Reports";
+import ReportCurrentMonth from "./secure/reports/ReportCurrentMonth";
+import ReportLastQuarter from "./secure/reports/ReportLastQuarter";
 
 class App extends Component<{ user: User, isUserLoading: boolean, isAuthenticated: boolean, setUser: any }> {
 
@@ -46,6 +49,7 @@ class App extends Component<{ user: User, isUserLoading: boolean, isAuthenticate
                     <Route path={'/products/*'} element={<Products/>}/>
                     <Route path={'/orders'} element={<Orders/>}/>
                     <Route path={'/orders/:id'} element={<OrderItems/>}/>
+                    <Route path={'/reports/*'} element={<Reports/>}/>
                     <Route
                         path="*"
                         element={
