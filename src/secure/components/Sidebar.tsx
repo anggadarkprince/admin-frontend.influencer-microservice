@@ -73,7 +73,9 @@ function Sidebar(props: { user: User, handleSignOut: any }) {
                                 </NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink to={'/reports'} className="nav-link d-flex align-items-center">
+                                <NavLink to={'/reports'} className={isActive =>
+                                    "nav-link d-flex align-items-center" + (location.pathname === '/reports' ? " active" : "")
+                                }>
                                     <Icon.BarChart2 size={16} className="me-2"/>
                                     Reports
                                 </NavLink>
@@ -96,7 +98,7 @@ function Sidebar(props: { user: User, handleSignOut: any }) {
                                 <Icon.PlusCircle size={16} className="me-2"/>
                             </a>
                         </h6>
-                        <ul className="nav flex-column mb-2">
+                        <ul className="nav nav-text flex-column mb-2">
                             <li className="nav-item">
                                 <NavLink className="nav-link d-flex align-items-center" to="/reports/current-month">
                                     <Icon.FileText size={16} className="me-2"/>

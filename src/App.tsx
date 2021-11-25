@@ -16,8 +16,7 @@ import {User} from "./classes/User";
 import setUser from "./redux/actions/setUserAction";
 import {connect} from "react-redux";
 import Reports from "./secure/reports/Reports";
-import ReportCurrentMonth from "./secure/reports/ReportCurrentMonth";
-import ReportLastQuarter from "./secure/reports/ReportLastQuarter";
+import Search from "./secure/search/Search";
 
 class App extends Component<{ user: User, isUserLoading: boolean, isAuthenticated: boolean, setUser: any }> {
 
@@ -50,6 +49,7 @@ class App extends Component<{ user: User, isUserLoading: boolean, isAuthenticate
                     <Route path={'/orders'} element={<Orders/>}/>
                     <Route path={'/orders/:id'} element={<OrderItems/>}/>
                     <Route path={'/reports/*'} element={<Reports/>}/>
+                    <Route path={'/search'} element={<Search/>}/>
                     <Route
                         path="*"
                         element={

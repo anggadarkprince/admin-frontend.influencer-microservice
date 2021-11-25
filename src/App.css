@@ -52,6 +52,10 @@ body {
   text-transform: uppercase;
 }
 
+.sidebar .nav-text .nav-link.active {
+  color: #0d6efd;
+}
+
 /*
  * Navbar
  */
