@@ -7,11 +7,11 @@ import {User} from "../classes/User";
 import setUser from "../redux/actions/setUserAction";
 import {connect} from "react-redux";
 
-class Login extends Component<{user: User, setUser: any}> {
+class Login extends Component<{user: User, isUserLoading: boolean, isAuthenticated: boolean, setUser: any}> {
     email = '';
     password = '';
     state = {
-        redirect: false
+        redirect: !this.props.isUserLoading && this.props.isAuthenticated
     }
 
     submitLoginForm = async (e: SyntheticEvent) => {
@@ -34,9 +34,10 @@ class Login extends Component<{user: User, setUser: any}> {
     }
 
     render() {
-        if (this.state.redirect) {
-            return <Navigate to={'/'} />;
+        if (this.state.redirect || (!this.props.isUserLoading && this.props.isAuthenticated)) {
+            return <Navigate to={'/dashboard'} />;
         }
+
         return (
             <main className="form-signin text-center mt-5">
                 <form onSubmit={this.submitLoginForm}>
@@ -66,10 +67,11 @@ class Login extends Component<{user: User, setUser: any}> {
     }
 }
 
-const mapStateToProps = (state: {user: User, isLoading: boolean}) => {
+const mapStateToProps = (state: {user: User, isLoading: boolean, isAuthenticated: boolean}) => {
     return {
         user: state.user,
-        isUserLoading: state.isLoading
+        isUserLoading: state.isLoading,
+        isAuthenticated: state.isAuthenticated,
     }
 }
 

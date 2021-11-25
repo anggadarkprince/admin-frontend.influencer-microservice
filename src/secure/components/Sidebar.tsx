@@ -10,7 +10,7 @@ function Sidebar(props: { user: User, handleSignOut: any }) {
     const [userAccess, setUserAccess] = useState(isUserAccessOpen);
 
     return (
-        <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse">
+        <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-dark sidebar overflow-auto collapse">
             <div className="position-sticky p-3">
                 <ul className="nav nav-pills flex-column">
                     <li className="nav-item">

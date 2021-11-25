@@ -7,9 +7,9 @@ import {User} from "../classes/User";
 import {connect} from 'react-redux';
 import setUser from "../redux/actions/setUserAction";
 
-class Wrapper extends Component<PropsWithChildren<{ user: User, setUser: any }>> {
+class Wrapper extends Component<PropsWithChildren<{ user: User, isUserLoading: boolean, isAuthenticated: boolean, setUser: any }>> {
     state = {
-        redirect: false,
+        redirectIfUnauthenticated: !this.props.isUserLoading && !this.props.isAuthenticated,
         user: new User()
     }
 
@@ -17,7 +17,7 @@ class Wrapper extends Component<PropsWithChildren<{ user: User, setUser: any }>>
         //if (!localStorage.getItem('token')) {
         //    window.location.href = '/login';
         //} else {
-            try {
+            /*try {
                 if (this.props.user.id === 0) {
                     const response = await axios.get('user');
 
@@ -33,8 +33,16 @@ class Wrapper extends Component<PropsWithChildren<{ user: User, setUser: any }>>
                 this.setState({
                     redirect: true
                 });
-            }
+            }*/
         //}
+    }
+
+    componentDidUpdate(prevProps: Readonly<React.PropsWithChildren<{ user: User; isUserLoading: boolean; isAuthenticated: boolean; setUser: any }>>) {
+        if (!this.props.isUserLoading && !this.props.isAuthenticated) {
+            this.setState({
+                redirectIfUnauthenticated: true
+            });
+        }
     }
 
     handleSignOut = async (e: SyntheticEvent) => {
@@ -45,12 +53,14 @@ class Wrapper extends Component<PropsWithChildren<{ user: User, setUser: any }>>
         //localStorage.clear();
 
         this.setState({
-            redirect: true
+            redirectIfUnauthenticated: true
+        }, () => {
+            this.props.setUser(new User());
         });
     }
 
     render() {
-        if (this.state.redirect) {
+        if (this.state.redirectIfUnauthenticated) {
             return <Navigate to={'/login'}/>;
         }
         return (
@@ -70,10 +80,11 @@ class Wrapper extends Component<PropsWithChildren<{ user: User, setUser: any }>>
     }
 }
 
-const mapStateToProps = (state: { user: User, isLoading: boolean }) => {
+const mapStateToProps = (state: { user: User, isLoading: boolean, isAuthenticated: boolean }) => {
     return {
         user: state.user,
-        isUserLoading: state.isLoading
+        isUserLoading: state.isLoading,
+        isAuthenticated: state.isAuthenticated,
     }
 }
 

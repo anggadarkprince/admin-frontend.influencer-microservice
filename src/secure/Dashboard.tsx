@@ -1,6 +1,6 @@
 import React, {Component, SyntheticEvent} from "react";
 import Wrapper from "./Wrapper";
-import c3 from 'c3';
+import c3, {ChartAPI} from 'c3';
 import 'c3/c3.css';
 import axios from "axios";
 import { formatThousands } from "../helpers/NumberFormat";
@@ -10,59 +10,68 @@ import {Link} from "react-router-dom";
 import {User} from "../classes/User";
 import {connect} from "react-redux";
 
-class Dashboard extends Component<{ user: User }> {
+class Dashboard extends Component<{ user: User, isUserLoading: boolean, isAuthenticated: boolean }> {
     state = {
         isLoading: true,
         transactions: [],
         error: ''
     }
+    chart: ChartAPI | undefined;
 
     componentDidMount = async () => {
         document.title = 'Dashboard';
 
-        if (this.props.user.canView('orders')) {
-            let chart = c3.generate({
-                bindto: '#chart',
-                data: {
-                    x: 'x',
-                    columns: [
-                        ['x'],
-                        ['Sales'],
-                    ],
-                    types: {
-                        Sales: 'bar'
+        this.chart = c3.generate({
+            bindto: '#chart',
+            data: {
+                x: 'x',
+                columns: [
+                    ['x'],
+                    ['Sales'],
+                ],
+                types: {
+                    Sales: 'bar'
+                }
+            },
+            padding: {
+                left: 45
+            },
+            axis: {
+                x: {
+                    type: 'timeseries',
+                    tick: {
+                        format: '%Y-%m-%d'
                     }
                 },
-                padding: {
-                    left: 45
-                },
-                axis: {
-                    x: {
-                        type: 'timeseries',
-                        tick: {
-                            format: '%Y-%m-%d'
-                        }
-                    },
-                    y: {
-                        tick: {
-                            format: function (d) {
-                                return formatThousands(d / 1000) + "K";
-                            }
+                y: {
+                    tick: {
+                        format: function (d) {
+                            return formatThousands(d / 1000) + "K";
                         }
                     }
                 }
-            });
+            }
+        });
 
+        if (!this.props.isUserLoading) {
+            await this.fetchDashboardData();
+        }
+    }
+
+    fetchDashboardData = async () => {
+        if (this.props.user.canView('orders')) {
             const response = await axios.get('chart');
 
             const records: { date: string, sum: number }[] = response.data.data;
 
-            chart.load({
-                columns: [
-                    ['x', ...records.map(r => r.date)],
-                    ['Sales', ...records.map(r => r.sum)]
-                ]
-            })
+            if (this.chart) {
+                this.chart.load({
+                    columns: [
+                        ['x', ...records.map(r => r.date)],
+                        ['Sales', ...records.map(r => r.sum)]
+                    ]
+                })
+            }
 
             const transactions = await axios.get('orders/latest');
 
@@ -75,6 +84,12 @@ class Dashboard extends Component<{ user: User }> {
                 isLoading: false,
                 error: 'You are unauthorized to see dashboard data'
             })
+        }
+    }
+
+    componentDidUpdate = async (prevProps: Readonly<{ user: User, isUserLoading: boolean, isAuthenticated: boolean }>) => {
+        if (this.props.isAuthenticated && prevProps.user.id !== this.props.user.id) {
+            await this.fetchDashboardData();
         }
     }
 
@@ -123,7 +138,6 @@ class Dashboard extends Component<{ user: User }> {
                             </div>
                         </div>
                     }
-
                 </div>
 
                 <div id="chart" />
@@ -139,13 +153,13 @@ class Dashboard extends Component<{ user: User }> {
                 <div className="table-responsive">
                     <table className="table table-striped table-sm">
                         <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Date</th>
-                                <th scope="col">Transaction ID</th>
-                                <th scope="col">Amount</th>
-                                <th scope="col">Name</th>
-                            </tr>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Transaction ID</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Name</th>
+                        </tr>
                         </thead>
                         <tbody>
                         {this.state.isLoading ? <LoadingRow colSpan={6} /> : this.renderTableRows()}
@@ -157,9 +171,11 @@ class Dashboard extends Component<{ user: User }> {
     }
 }
 
-const mapStateToProps = (state: {user: User}) => {
+const mapStateToProps = (state: {user: User, isLoading: boolean, isAuthenticated: boolean}) => {
     return {
-        user: state.user
+        user: state.user,
+        isUserLoading: state.isLoading,
+        isAuthenticated: state.isAuthenticated,
     }
 }
 

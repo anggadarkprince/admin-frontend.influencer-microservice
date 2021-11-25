@@ -3,8 +3,10 @@ import './Public.css';
 import * as Icon from "react-feather";
 import axios from "axios";
 import {Link, Navigate} from 'react-router-dom';
+import {User} from "../classes/User";
+import {connect} from "react-redux";
 
-class Register extends Component {
+class Register extends Component<{ user: User, isUserLoading: boolean, isAuthenticated: boolean }> {
     firstName = '';
     lastName = '';
     email = '';
@@ -12,7 +14,8 @@ class Register extends Component {
     passwordConfirm = '';
 
     state = {
-        redirect: false
+        redirect: false,
+        redirectToDashboard: !this.props.isUserLoading && this.props.isAuthenticated
     }
 
     submitRegisterData = async (e: SyntheticEvent) => {
@@ -33,7 +36,10 @@ class Register extends Component {
 
     render() {
         if (this.state.redirect) {
-            return <Navigate to={'/login'} />;
+            return <Navigate to={'/login'}/>;
+        }
+        if (this.state.redirectToDashboard) {
+            return <Navigate to={'/dashboard'} />;
         }
 
         return (
@@ -48,7 +54,7 @@ class Register extends Component {
                             <div className="form-floating mb-2">
                                 <input type="text" className="form-control" id="floatingFirstName"
                                        placeholder="Your first name" required
-                                       onChange={e => this.firstName = e.target.value} />
+                                       onChange={e => this.firstName = e.target.value}/>
                                 <label htmlFor="floatingFirstName">First Name</label>
                             </div>
                         </div>
@@ -89,4 +95,14 @@ class Register extends Component {
     }
 }
 
-export default Register;
+const mapStateToProps = (state: { user: User, isLoading: boolean, isAuthenticated: boolean }) => {
+    return {
+        user: state.user,
+        isUserLoading: state.isLoading,
+        isAuthenticated: state.isAuthenticated,
+    }
+}
+
+const connectToRedux = connect(mapStateToProps)
+
+export default connectToRedux(Register);
