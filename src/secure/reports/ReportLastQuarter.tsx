@@ -52,9 +52,9 @@ class ReportLastQuarter extends Component<{user: User}> {
                     <td>{report.name}</td>
                     <td>{report.email}</td>
                     <td>{report.influencer_email}</td>
-                    <td>{report.address}</td>
-                    <td>{report.city}</td>
-                    <td>{report.country}</td>
+                    <td>{report.address || '-'}</td>
+                    <td>{report.city || '-'}</td>
+                    <td>{report.country || '-'}</td>
                     <td>{report.complete}</td>
                     <td>{report.created_at}</td>
                 </tr>

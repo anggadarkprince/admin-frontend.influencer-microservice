@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import * as Icon from "react-feather";
-import {NavLink, useLocation} from "react-router-dom";
+import {Link, NavLink, useLocation} from "react-router-dom";
 import {User} from "../../classes/User";
 import {connect} from "react-redux";
 
@@ -94,9 +94,9 @@ function Sidebar(props: { user: User, handleSignOut: any }) {
                     <>
                         <h6 className="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                             <span>Saved reports</span>
-                            <a className="link-secondary" href="/orders" aria-label="Add a new report">
+                            <Link className="link-secondary" to="/orders" aria-label="Add a new report">
                                 <Icon.PlusCircle size={16} className="me-2"/>
-                            </a>
+                            </Link>
                         </h6>
                         <ul className="nav nav-text flex-column mb-2">
                             <li className="nav-item">
