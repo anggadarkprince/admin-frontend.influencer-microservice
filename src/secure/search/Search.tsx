@@ -35,7 +35,7 @@ class Search extends Component<{ user: User, q: string }> {
         });
     }
 
-    componentDidUpdate = async (prevProps) => {
+    componentDidUpdate = async (prevProps: any) => {
         if (prevProps.q !== this.props.q) {
             await this.componentDidMount();
         }
