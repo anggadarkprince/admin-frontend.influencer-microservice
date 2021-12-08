@@ -19,7 +19,8 @@ class Login extends Component<{user: User, isUserLoading: boolean, isAuthenticat
 
         const response = await axios.post('login', {
             email: this.email,
-            password: this.password
+            password: this.password,
+            scope: 'admin'
         });
         const user: User = Object.assign(new User(), response.data.user);
 
